@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query"
-import request from "graphql-request"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { graphql } from "../generated/gql"
-
-const API_URL = "http://localhost:4000/graphql"
+import { queryClient } from "../query_client"
+import { CreateMessageMutationVariables } from "../generated/gql/graphql"
+import { client } from "../graphql/client"
 
 const allTweets = graphql(/* GraphQL */ `
   query Tweets {
@@ -17,6 +17,30 @@ const allTweets = graphql(/* GraphQL */ `
   }
 `)
 
+const postTweet = graphql(/* GraphQL */ `
+  mutation CreateMessage($input: CreateMessageInput!) {
+    createMessage(input: $input) {
+      id
+      body
+      user {
+        id
+        username
+      }
+    }
+  }
+`)
+
 export function useTweets() {
-  return useQuery({ queryKey: ["tweets"], queryFn: async () => request(API_URL, allTweets) })
+  return useQuery({
+    queryKey: ["tweets", "list"],
+    queryFn: async () => client.request(allTweets),
+  })
+}
+
+export function useTweetMutation() {
+  return useMutation({
+    mutationKey: ["tweets", "new"],
+    mutationFn: async (input: CreateMessageMutationVariables) => client.request(postTweet, input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tweets", "list"] }),
+  })
 }
