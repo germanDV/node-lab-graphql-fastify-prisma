@@ -17,7 +17,7 @@ $ docker run --name node-lab-graphql -e POSTGRES_USER=postgres -e POSTGRES_PASSW
 
 ## Dependency Versions
 
-Due to a `apollo-server-fastify` not using latest versions of fastify libraries, `fastify` has to be kept at `^3` (v4 will not work). In addition to `fastify` itself, the plugins `@fastify/jwt` and `@fastify/cookie` are also held back.
+Due to `apollo-server-fastify` not using latest versions of fastify libraries, `fastify` has to be kept at `^3` (v4 will not work). In addition to `fastify` itself, the plugins `@fastify/jwt` and `@fastify/cookie` are also held back.
 
 `type-graphql` does not yet support `graphql@16` (WIP according to github issues), so `graphql` is kept at `^15`.
 
