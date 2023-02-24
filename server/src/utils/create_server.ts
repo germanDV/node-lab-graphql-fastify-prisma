@@ -18,7 +18,14 @@ const app = fastify({ logger: true })
 app.register(fastifyCors, {
   credentials: true,
   origin: (origin, cb) => {
-    if (!origin || ["http://localhost:3000", "https://studio.apollographql.com"].includes(origin)) {
+    if (
+      !origin ||
+      [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://studio.apollographql.com",
+      ].includes(origin)
+    ) {
       return cb(null, true)
     }
     return cb(new Error("Not allowed"), false)
