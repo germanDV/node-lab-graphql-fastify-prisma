@@ -1,19 +1,28 @@
 import { useTweets } from "../hooks/tweets"
 
 function Timeline() {
-  const { data, error, isLoading } = useTweets()
+  const { data, error, isLoading, isSuccess } = useTweets()
 
   if (isLoading) {
     return <p>loading tweets...</p>
   }
-
   if (error) {
     return <p>error loading tweets.</p>
+  }
+  if (!isSuccess) {
+    return <p>No error but no success??</p>
   }
 
   return (
     <div>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <ul>
+        {data.messages.map((m) => (
+          <li key={m.id}>
+            <span>@{m.user.username}:</span>
+            <span>{m.body}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
