@@ -55,6 +55,37 @@ function fastifyAppClosePlugin(app: FastifyInstance): ApolloServerPlugin {
   }
 }
 
+/** Set HTTP error code in responses if we have a GraphQL error */
+const setHttpErrorCodes: ApolloServerPlugin = {
+  async requestDidStart() {
+    return {
+      async willSendResponse({ response }) {
+        if (response && response.http && response.errors && response.errors.length > 0) {
+          if (response.errors[0].message.startsWith("Access denied")) {
+            response.http.status = 403
+            return
+          }
+
+          switch (response.errors[0].extensions?.code) {
+            case "BAD_USER_INPUT":
+            case "GRAPHQL_VALIDATION_FAILED":
+              response.http.status = 400
+              break
+            case "UNAUTHENTICATED":
+              response.http.status = 401
+              break
+            case "FORBIDDEN":
+              response.http.status = 403
+              break
+            default:
+              response.http.status = 500
+          }
+        }
+      },
+    }
+  },
+}
+
 type CtxUser = Omit<User, "password">
 
 async function buildContext({
@@ -96,6 +127,7 @@ export async function createServer() {
     schema,
     plugins: [
       fastifyAppClosePlugin(app),
+      setHttpErrorCodes,
       ApolloServerPluginDrainHttpServer({ httpServer: app.server }),
     ],
     context: buildContext,
