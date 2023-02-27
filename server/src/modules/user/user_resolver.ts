@@ -69,6 +69,15 @@ class UserResolver {
   }
 
   @Authorized()
+  @Mutation(() => String)
+  async logout(@Ctx() context: Context) {
+    const userId = context.user?.id!
+    context.user = null
+    context.reply?.setCookie("token", "", { expires: new Date() })
+    return userId
+  }
+
+  @Authorized()
   @Mutation(() => User)
   async followUser(
     @Arg("input", { validate: false }) input: FollowUserInput,
