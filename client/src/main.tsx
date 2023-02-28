@@ -7,6 +7,9 @@ import { queryClient } from "./query_client"
 import { AuthProvider } from "./core/auth"
 import "./index.css"
 
+// Start WS subscription.
+import "./core/subscription"
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
