@@ -1,4 +1,5 @@
 import { TweetsQuery } from "../generated/gql/graphql"
+import FollowActions from "./FollowActions"
 
 type Props = {
   tweet: TweetsQuery["messages"][number]
@@ -10,8 +11,13 @@ function Tweet({ tweet }: Props) {
   return (
     <div className="tweet">
       <p>{tweet.body}</p>
-      <time dateTime={localDateTime}>{localDateTime}</time>
-      <span className="author">@{tweet.user.username}</span>
+      <section>
+        <div>
+          <time dateTime={localDateTime}>{localDateTime}</time>
+          <span className="author">@{tweet.user.username}</span>
+        </div>
+        <FollowActions authorName={tweet.user.username} />
+      </section>
     </div>
   )
 }

@@ -15,5 +15,5 @@ export function createMessage({ userId, ...input }: CreateMessageInput) {
 }
 
 export function findMessages() {
-  return prisma.message.findMany()
+  return prisma.message.findMany({ orderBy: { createdAt: "desc" } })
 }

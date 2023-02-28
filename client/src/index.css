@@ -121,6 +121,12 @@ nav h2 {
   border-bottom: 1px solid grey;
 }
 
+.tweet section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .tweet .author {
   font-weight: bold;
   margin-left: 8px;

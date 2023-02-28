@@ -19,6 +19,9 @@ const documents = {
     "\n  mutation Logout {\n    logout\n  }\n": types.LogoutDocument,
     "\n  query Tweets {\n    messages {\n      id\n      createdAt\n      body\n      user {\n        username\n      }\n    }\n  }\n": types.TweetsDocument,
     "\n  mutation CreateMessage($input: CreateMessageInput!) {\n    createMessage(input: $input) {\n      id\n      body\n      user {\n        id\n        username\n      }\n    }\n  }\n": types.CreateMessageDocument,
+    "\n  query Following {\n    me {\n      following {\n        items {\n          id\n          username\n        }\n      }\n    }\n  }\n": types.FollowingDocument,
+    "\n  mutation FollowUser($input: FollowUserInput!) {\n    followUser(input: $input) {\n      following {\n        count\n        items {\n          username\n        }\n      }\n    }\n  }\n": types.FollowUserDocument,
+    "\n  mutation UnfollowUser($input: FollowUserInput!) {\n    unfollowUser(input: $input) {\n      following {\n        count\n        items {\n          username\n        }\n      }\n    }\n  }\n": types.UnfollowUserDocument,
 };
 
 /**
@@ -59,6 +62,18 @@ export function graphql(source: "\n  query Tweets {\n    messages {\n      id\n 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation CreateMessage($input: CreateMessageInput!) {\n    createMessage(input: $input) {\n      id\n      body\n      user {\n        id\n        username\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateMessage($input: CreateMessageInput!) {\n    createMessage(input: $input) {\n      id\n      body\n      user {\n        id\n        username\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query Following {\n    me {\n      following {\n        items {\n          id\n          username\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query Following {\n    me {\n      following {\n        items {\n          id\n          username\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation FollowUser($input: FollowUserInput!) {\n    followUser(input: $input) {\n      following {\n        count\n        items {\n          username\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation FollowUser($input: FollowUserInput!) {\n    followUser(input: $input) {\n      following {\n        count\n        items {\n          username\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UnfollowUser($input: FollowUserInput!) {\n    unfollowUser(input: $input) {\n      following {\n        count\n        items {\n          username\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UnfollowUser($input: FollowUserInput!) {\n    unfollowUser(input: $input) {\n      following {\n        count\n        items {\n          username\n        }\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
