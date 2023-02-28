@@ -8,6 +8,8 @@
 - Fastify
 - Prisma (PostgreSQL)
 - TypeGraphQL
+- React-Query
+- Subscriptions
 
 ## Postgres Docker Image
 
@@ -24,4 +26,6 @@ Due to `apollo-server-fastify` not using latest versions of fastify libraries, `
 ## Init
 
 - Have a postgres instance up (set the URI in _./server/.env_)
-- Set up the database: `yarn prisma migrate dev --name init`
+- Set up the database: `cd server && yarn prisma migrate dev --name init`
+- Start server: `cd server && yarn && yarn dev`
+- Start client: `cd client && yarn && yarn dev`
