@@ -1,4 +1,4 @@
-import { AuthCtxType } from "../hooks/auth"
+import { AuthCtxType } from "../core/auth"
 
 type Props = {
   user: AuthCtxType["user"]
@@ -7,13 +7,12 @@ type Props = {
 
 function UserData({ user, handleLogout }: Props) {
   return (
-    <>
-      <h4>@{user.username}</h4>
-      <small>{user.email}</small>
+    <div className="flex">
+      <h2>Welcome, @{user.username}!</h2>
       <button type="button" onClick={handleLogout}>
         Log Out
       </button>
-    </>
+    </div>
   )
 }
 

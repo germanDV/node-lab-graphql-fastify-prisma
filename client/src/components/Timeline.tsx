@@ -1,4 +1,5 @@
 import { useTweets } from "../core/tweets"
+import Tweet from "./Tweet"
 
 function Timeline() {
   const { data, error, isLoading, isSuccess } = useTweets()
@@ -14,15 +15,10 @@ function Timeline() {
   }
 
   return (
-    <div className="box">
-      <ul>
-        {data.messages.map((m) => (
-          <li key={m.id}>
-            <span>@{m.user.username}:</span>
-            <span>{m.body}</span>
-          </li>
-        ))}
-      </ul>
+    <div className="timeline">
+      {data.messages.map((m) => (
+        <Tweet key={m.id} tweet={m} />
+      ))}
     </div>
   )
 }

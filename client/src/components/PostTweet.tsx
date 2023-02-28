@@ -17,14 +17,14 @@ function PostTweet() {
   }
 
   return (
-    <div className="box">
+    <div>
       {user.id ? (
-        <form onSubmit={handleSubmit}>
-          <textarea name="body" rows={10} />
+        <form onSubmit={handleSubmit} className="post-tweet">
+          <textarea name="body" rows={6} placeholder="Have something to share?" />
           <button>Tweet</button>
         </form>
       ) : (
-        <div>Log in to tweet.</div>
+        <div style={{ textAlign: "center" }}>Log in to tweet.</div>
       )}
     </div>
   )

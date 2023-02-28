@@ -1,12 +1,11 @@
-import UserAuth from "./components/UserAuth"
+import NavBar from "./components/NavBar"
 import Timeline from "./components/Timeline"
 import PostTweet from "./components/PostTweet"
 
 function App() {
   return (
     <div>
-      <h1>`Partial&lt;Twitter&gt;`</h1>
-      <UserAuth />
+      <NavBar />
       <PostTweet />
       <Timeline />
     </div>

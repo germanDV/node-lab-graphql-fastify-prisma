@@ -10,16 +10,20 @@ function LoginOrSignup() {
   switch (show) {
     case "login":
       return (
-        <div>
+        <div className="flex">
           <Login />
-          <button onClick={() => setShow(null)}>&larr;</button>
+          <i onClick={() => setShow(null)} style={{ cursor: "pointer", marginLeft: 4 }}>
+            &larr;
+          </i>
         </div>
       )
     case "signup":
       return (
-        <div>
+        <div className="flex">
           <Register />
-          <button onClick={() => setShow(null)}>&larr;</button>
+          <i onClick={() => setShow(null)} style={{ cursor: "pointer", marginLeft: 4 }}>
+            &larr;
+          </i>
         </div>
       )
     default:
