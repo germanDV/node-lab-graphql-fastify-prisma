@@ -11,7 +11,7 @@ import {
   verifyPassword,
 } from "./user_service"
 import { Context } from "../../utils/create_server"
-import { ApolloError } from "apollo-server-core"
+import { ApolloError, UserInputError } from "apollo-server-core"
 
 @Resolver(() => User)
 class UserResolver {
@@ -20,9 +20,11 @@ class UserResolver {
     try {
       const user = await createUser(input)
       return user
-    } catch (err) {
-      // check if email or username is not unique
-      throw err
+    } catch (err: any) {
+      if (err.code === "P2002") {
+        throw new UserInputError("user already exists")
+      }
+      throw new ApolloError(err?.message || "")
     }
   }
 
@@ -47,7 +49,7 @@ class UserResolver {
       candidate: input.password,
     })
 
-    if (!isValid) throw new ApolloError("Invalid credentials")
+    if (!isValid) throw new UserInputError("Invalid credentials")
 
     const token = await context.reply?.jwtSign({
       id: user.id,
@@ -83,12 +85,8 @@ class UserResolver {
     @Arg("input", { validate: false }) input: FollowUserInput,
     @Ctx() context: Context
   ) {
-    try {
-      const result = await followUser({ ...input, userId: context.user?.id! })
-      return result
-    } catch (err: any) {
-      throw new ApolloError(err)
-    }
+    const result = await followUser({ ...input, userId: context.user?.id! })
+    return result
   }
 
   @Authorized()
@@ -97,19 +95,14 @@ class UserResolver {
     @Arg("input", { validate: false }) input: FollowUserInput,
     @Ctx() context: Context
   ) {
-    try {
-      const result = await unfollowUser({ ...input, userId: context.user?.id! })
-      return result
-    } catch (err: any) {
-      throw new ApolloError(err)
-    }
+    const result = await unfollowUser({ ...input, userId: context.user?.id! })
+    return result
   }
 
   @Authorized()
   @FieldResolver(() => UserFollowers)
   async followers(@Root() user: User) {
     const data = await findUserFollowedBy(user.id)
-
     return {
       count: data?.followedBy.length,
       items: data?.followedBy,
@@ -120,7 +113,6 @@ class UserResolver {
   @FieldResolver(() => UserFollowers)
   async following(@Root() user: User) {
     const data = await findUserFollowing(user.id)
-
     return {
       count: data?.following.length,
       items: data?.following,
